@@ -1,0 +1,136 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      4328,        128]
+NotebookOptionsPosition[      4034,        115]
+NotebookOutlinePosition[      4375,        130]
+CellTagsIndexPosition[      4332,        127]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"apiKey", " ", "=", "\"\<Your_API_KEY\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"NotebookDirectory", "[", "]"}], "<>", "\"\<buffer.jpg\>\""}], 
+    ",", " ", "%"}], "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"imageForGoogle", " ", "=", " ", 
+   RowBox[{"Import", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], "<>", "\"\<buffer.jpg\>\""}], 
+     ",", "\"\<Byte\>\""}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"imageForGoogle", " ", "=", 
+   RowBox[{"BaseEncode", "[", 
+    RowBox[{"ByteArray", "[", "imageForGoogle", "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"header", "=", 
+   RowBox[{"\"\<Headers\>\"", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"\"\<Accept\>\"", "\[Rule]", "\"\<application/json\>\""}], ",", 
+      RowBox[{
+      "\"\<Content-Type\>\"", "\[Rule]", "\"\<application/json\>\""}]}], 
+     "}"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "preBody", " ", "=", " ", 
+   "\"\<{\n  \\\"requests\\\": [\n    {\n      \\\"image\\\": {\n        \
+\\\"content\\\": \\\"\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+   "postBody", " ", "=", " ", 
+    "\"\<\\\"\n      },\n      \\\"features\\\": [\n        {\n          \
+\\\"type\\\": \\\"TEXT_DETECTION\\\"\n        }\n      ]\n    }\n  ]\n\
+}\>\""}], ";"}], " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Choose", " ", "between", " ", "DOCUMENT_TEXT", "_DETECTION", " ", "and", 
+    " ", "TEXT_DETECTION"}], " ", "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{"body", " ", "=", " ", 
+   RowBox[{"\"\<Body\>\"", "\[Rule]", " ", 
+    RowBox[{
+    "preBody", " ", "<>", " ", "imageForGoogle", " ", "<>", " ", 
+     "postBody"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"visionResults", "=", 
+   RowBox[{"HTTPRequest", "[", 
+    RowBox[{
+     RowBox[{
+     "\"\<https://vision.googleapis.com/v1/images:annotate?key=\>\"", "<>", 
+      "apiKey"}], ",", 
+     RowBox[{"<|", 
+      RowBox[{
+       RowBox[{"Method", "\[Rule]", "\"\<POST\>\""}], ",", " ", "header", ",",
+        "body"}], "|>"}], ",", 
+     RowBox[{"VerifySecurityCertificates", "\[Rule]", "False"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"text", " ", "=", " ", 
+   RowBox[{
+    RowBox[{"URLRead", "[", "visionResults", "]"}], "[", "\"\<Body\>\"", 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"ocrResults", " ", "=", " ", 
+  RowBox[{"(", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"ImportString", "[", 
+         RowBox[{
+          RowBox[{"ExportString", "[", 
+           RowBox[{"text", ",", "\"\<Text\>\"", ",", 
+            RowBox[{"CharacterEncoding", "\[Rule]", "\"\<UTF8\>\""}]}], "]"}],
+           ",", " ", "\"\<RawJSON\>\""}], "]"}], "\[IndentingNewLine]", "[", 
+        "\"\<responses\>\"", "]"}], "[", 
+       RowBox[{"[", "1", "]"}], "]"}], "\[IndentingNewLine]", "[", 
+      "\"\<textAnnotations\>\"", "]"}], "[", 
+     RowBox[{"[", "1", "]"}], "]"}], "\[IndentingNewLine]", "[", 
+    "\"\<description\>\"", "]"}], ")"}]}]}], "Input",
+ CellChangeTimes->{{3.7524147030641365`*^9, 3.752414715711834*^9}, {
+   3.752415027909156*^9, 3.7524150392276163`*^9}, 3.7524151333343887`*^9, {
+   3.7534476589279013`*^9, 
+   3.7534477414166946`*^9}},ExpressionUUID->"152b6421-23bd-46f9-b422-\
+65040ca33443"]
+},
+WindowSize->{958, 966},
+WindowMargins->{{Automatic, -8}, {Automatic, 0}},
+FrontEndVersion->"11.3 for Microsoft Windows (64-bit) (March 6, 2018)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 3472, 93, 732, "Input",ExpressionUUID->"152b6421-23bd-46f9-b422-65040ca33443"]
+}
+]
+*)
+
